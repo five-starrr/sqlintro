@@ -1,27 +1,47 @@
 Hint: So that you can understand the schema, you may want to just do a simple select statement on each
 table.  For example, to see the schema for the Products table, you could do:
 
-SELECT * FROM Products LIMIT 5;
+SELECT * FROM Products LIMIT 5
+
+
 
 1. Use an SQL SELECT statement to retrieve the first 10 rows of the Customer table, ordered by CustomerName.
 Paste your SQL statement below:
+                              - SELECT * FROM Products LIMIT 10;
 
 
 2. Use an SQL Select statement to retrieve the names and prices for all products that cost less than $20.
 Paste your SQL statement below:
+                              - SELECT ProductName, Price
+                                FROM Products
+                                WHERE Price < 20;
 
 
 3. Retrieve all employees whose last name starts with C.  Paste your SQL statement below:
+                              - SELECT *
+                                FROM Employees
+                                WHERE LastName LIKE "C%";
 
 
 4. Retrieve the order ID and customer name for all orders where the customer name starts with A.
 Here you will have to do a join of the Orders table and the Customers table.  Paste your SQL
 statement below.
+                              - SELECT OrderID, CustomerName
+                                FROM Orders           
+                                INNER JOIN Customers 
+                                ON Orders.CustomerID = Customers.CustomerID
+                                WHERE CustomerName LIKE "A%";
 
 
 5. Retrieve the list of customers, ordered by customer name, along with their order IDs.  Note
 that not every customer has an order, but be sure that you include those customers without orders
 in the results of the query.  Paste your SQL statement below.
+                             
+                              - SELECT c.CustomerName, o.OrderID
+                                FROM Customers c
+                                LEFT JOIN Orders o
+                                ON c.CustomerID = o.CustomerID
+                                ORDER BY CustomerName ASC;
 
 
 
@@ -32,12 +52,25 @@ SELECT CustomerName FROM Customers WHERE CustomerID NOT IN (SELECT CustomerID FR
 
 This is a subquery -- we haven't talked about those.  But, you can do the same thing with a left
 join by comparing the OrderID column with NULL.  Paste your SQL statement below.
+                             
+                              - SELECT c.CustomerName, o.OrderID
+                                FROM Customers c
+                                LEFT JOIN Orders o
+                                ON c.CustomerID = o.CustomerID
+                                WHERE o.OrderID IS NULL;
 
 
 
 7. Retrieve the OrderID and ProductName of every order for a product with Tofu in the name.
 Paste your SQL statement below.  You will have to join Orders, OrderDetails, and Products.
-
+                             
+                              - SELECT o.OrderID, p.ProductName
+                                FROM Orders o 
+                                JOIN OrderDetails od
+                                ON o.OrderID = od.OrderID
+                                JOIN Products p
+                                ON od.ProductID = p.ProductID
+                                WHERE p.ProductName LIKE "%tofu%";
 
 
 
