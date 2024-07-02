@@ -3,11 +3,36 @@ to join the OrderDetails table with the product table.  For TotalCount, you will
 SUM(Quantity) AS TotalCount .  Order by product name.
 You will need to group by product ID.  Paste your SQL statement below.
 
+              - SELECT p.ProductName, SUM(od.QUANTITY) AS TotalCount 
+                FROM Products p
+                JOIN OrderDetails od
+                ON p.ProductID = od.ProductID
+                GROUP BY od.ProductID
+                ORDER BY p.ProductName;
+
+
+
+
+
+
 
 2. Retrieve the customer name and OrderDetailsID for all the OrderDetails for each customer,
 ordered by customer name. Paste your SQL statement below. You will have to join the Customers
 table with the Orders table, and the Orders table with the OrderDetails table, 
 because the Orders table is the one that ties the Customer table to the OrderDetails table.
+
+              - SELECT c.CustomerName, od.OrderDetailID
+                FROM Customers c
+                JOIN Orders o
+                ON c.CustomerID = o.CustomerID
+                JOIN OrderDetails od
+                ON o.OrderID = od.OrderID
+                ORDER BY c.CustomerName;
+
+
+
+
+
 
 
 3. Extend the previous query to join the Products table.  You are now joining the Customers, Orders,
@@ -17,28 +42,85 @@ may have ordered the same product in several different orders.  So the total qua
 SUM(Quantity) AS TotalQuantity and you must GROUP BY CustomerID, ProductID.  Paste your
 SQL statement below.
 
+              - SELECT c.CustomerName, p.ProductName, SUM(od.Quantity) AS TotalQuantity
+                FROM Customers c
+                JOIN Orders o
+                ON c.CustomerID = o.CustomerID
+                JOIN OrderDetails od
+                ON o.OrderID = od.OrderID
+                JOIN Products p
+                ON od.ProductID = p.ProductID
+                GROUP BY c.CustomerID, p.ProductID;
+
+
+
+
+
 
 
 4. Extend the previous query to give the total price as well as the customer name, product name, 
 and total quantity.  Here you will have
 (SUM(Quantity) * Price) AS TotalPrice.  Paste your SQL statement below.
 
+              - SELECT c.CustomerName, p.ProductName, SUM(od.Quantity) AS TotalQuantity, (SUM(od.Quantity) * p.Price) AS TotalPrice
+                FROM Customers c
+                JOIN Orders o
+                ON c.CustomerID = o.CustomerID
+                JOIN OrderDetails od
+                ON o.OrderID = od.OrderID
+                JOIN Products p
+                ON od.ProductID = p.ProductID
+                GROUP BY c.CustomerID, p.ProductID;
+
+
+
+
+
 
 5. Add a new Order to the Orders table.  You will have to specify the ID of an existing customer
 to satisfy the foreign key constraint.  You will also have to specify the ID of an existing
 employee.  Paste your SQL statement below.
 
+              - INSERT INTO Orders (CustomerID, EmployeeID, OrderDate, ShipperID)
+                VALUES (34, 3, "7/4/1996 ", 3);
+
+
+
+
+
+
 
 6. Add three OrderDetails.  These should specify the ID of the new Order you just created.  For each,
 you will have to specify the ID of an existing product.  Paste your SQL statement below.
 
+              - INSERT INTO OrderDetails (OrderID, ProductID, Quantity)
+                VALUES (10333, 5, 20), (10444,  6, 20), (10284, 3, 5);
+
+
+
+
+
 
 7.  Delete the third of the OrderDetails you just added.  Paste your SQL statement below.
+
+              - DELETE FROM OrderDetails WHERE OrderDetailID = 521;
+
+
+
+
 
 
 
 8. Update the Price Table, so that every product with a price less than $20 has the price increased by
 0.50.  Paste your SQL statement below.
+
+              - UPDATE Products
+                SET Price = Price + 0.5
+                WHERE Price < 20;
+
+
+
+
 
 
 9.  Try to delete Customer 76.  What happens? What would you have to delete in order to delete
@@ -48,5 +130,7 @@ to delete this customer.  The first is
 DELETE FROM OrderDetails WHERE OrderID IN (SELECT OrderID FROM Orders WHERE CustomerID=76);
 
 What are the other two statements?  Try them out, and then paste them below.
-
+              
+              - DELETE FROM Orders WHERE CustomerID = 76;
+                DELETE FROM Customers WHERE CustomerID = 76;
 
